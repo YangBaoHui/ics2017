@@ -1,3 +1,4 @@
+
 # LiteNES
 
 Nintendo Entertainment System模拟器。故意做了一些错误的实现以提高性能（所以部分图形显示不正确）。
