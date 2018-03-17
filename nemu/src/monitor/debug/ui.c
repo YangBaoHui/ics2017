@@ -38,6 +38,8 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
 static struct {
   char *name;
   char *description;
@@ -45,7 +47,8 @@ static struct {
 } cmd_table [] = {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
+  { "q", "Exit NEMU", cmd_q},
+  { "si", "Go on some steps", cmd_si },
 
   /* TODO: Add more commands */
 
@@ -75,7 +78,16 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
+static int cmd_si(char *args) {
+	    char *arg = strtok(NULL, " ");
+	        int n = 0;
+		    sscanf(arg, "%d", &n);
+		        for (int j = 0; j < n; ++j) {
+				        cpu_exec(1);
+					    }
 
+			    return 1;
+}
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
