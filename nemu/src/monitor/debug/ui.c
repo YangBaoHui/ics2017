@@ -68,12 +68,12 @@ static int cmd_help(char *args) {
 
   if (arg == NULL) {
     /* no argument given */
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0; i < NR_CMD; i++) {
       printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   }
   else {
-    for (i = 0; i < NR_CMD; i ++) {
+    for (i = 0;i<NR_CMD;i++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
         printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
@@ -91,20 +91,18 @@ static int cmd_si(char *args) {
 	else
 	{
         sscanf(arg, "%d", &n);
+	if(n<=20){
         for (int j = 0; j < n; ++j) {
          cpu_exec(1);
 		  }
 	}
+	else printf("Input Error");
+	}
 	    return 1;
 }
-void ui_mainloop(int is_batch_mode) {
-  if (is_batch_mode) {
-    cmd_c(NULL);
-    return;
-  }
 
 void print_reg() {
-	    for (int i = 0; i < 8; i++) {
+	    for (int i = 0; i < 8; ++i) {
                 printf("%s %x\n", regsl[i], cpu.gpr[i]._32);  }
 	    for (int i = 0; i < 8; ++i) {
 	        printf("%s %x\n", regsw[i], cpu.gpr[i]._16);				    }
@@ -117,12 +115,12 @@ void print_reg() {
 static int cmd_info(char *args) {
 	    char *arg = strtok(NULL, " ");
 	        if (strcmp(arg, "r") == 0)  print_reg();
-	    return 0;
+	    return 1;
 }
 
 static int cmd_x(char *args) {
 
-	    char *arg1=strt k(NULL," ");
+	    char *arg1=strtok(NULL," ");
 	    char *arg2=strtok(NULL," ");
 
 	    int len;
@@ -137,6 +135,13 @@ static int cmd_x(char *args) {
 	    printf("\n");
             return 1;
 }
+
+void ui_mainloop(int is_batch_mode) {
+	  if (is_batch_mode) {
+		      cmd_c(NULL);
+		          return;
+			    }
+
 
   while (1) {
     char *str = rl_gets();
