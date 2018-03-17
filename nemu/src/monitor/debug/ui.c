@@ -40,6 +40,10 @@ static int cmd_help(char *args);
 
 static int cmd_si(char *args);
 
+static int cmd_info(char *args);
+
+static int cmd_x(char *args);
+
 static struct {
   char *name;
   char *description;
@@ -49,7 +53,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q},
   { "si", "Go on some steps", cmd_si },
-
+  {"info", "print register states", cmd_info },
+  {"x", "scan memory", cmd_x},
   /* TODO: Add more commands */
 
 };
@@ -78,21 +83,60 @@ static int cmd_help(char *args) {
   }
   return 0;
 }
-static int cmd_si(char *args) {
-	    char *arg = strtok(NULL, " ");
-	        int n = 0;
-		    sscanf(arg, "%d", &n);
-		        for (int j = 0; j < n; ++j) {
-				        cpu_exec(1);
-					    }
 
-			    return 1;
+static int cmd_si(char *args) {
+	char *arg = strtok(NULL, " ");
+        int n = 0;
+	if(arg==NULL) cpu_exec(1);
+	else
+	{
+        sscanf(arg, "%d", &n);
+        for (int j = 0; j < n; ++j) {
+         cpu_exec(1);
+		  }
+	}
+	    return 1;
 }
 void ui_mainloop(int is_batch_mode) {
   if (is_batch_mode) {
     cmd_c(NULL);
     return;
   }
+
+void print_reg() {
+	    for (int i = 0; i < 8; i++) {
+                printf("%s %x\n", regsl[i], cpu.gpr[i]._32);  }
+	    for (int i = 0; i < 8; ++i) {
+	        printf("%s %x\n", regsw[i], cpu.gpr[i]._16);				    }
+            for (int i = 0; i < 8; ++i) {
+	           for (int j = 0; j < 2; j++)
+          printf("%s %x\n", regsb[i], cpu.gpr[i]._8[j]); 
+		 }
+}
+
+static int cmd_info(char *args) {
+	    char *arg = strtok(NULL, " ");
+	        if (strcmp(arg, "r") == 0)  print_reg();
+	    return 0;
+}
+
+static int cmd_x(char *args) {
+
+	    char *arg1=strt k(NULL," ");
+	    char *arg2=strtok(NULL," ");
+
+	    int len;
+	    vaddr_t addr;
+	    sscanf(arg1,"%d",&len);
+            sscanf(arg2,"%x",&addr);	
+	    printf("0x%x:",addr);
+            for (int j = 0; j <len ; ++j) {
+	        printf("%x ",vaddr_read(addr,4));
+		        addr+=4;
+		   }	
+	    printf("\n");
+            return 1;
+}
 
   while (1) {
     char *str = rl_gets();
