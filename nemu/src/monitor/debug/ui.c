@@ -44,6 +44,8 @@ static int cmd_info(char *args);
 
 static int cmd_x(char *args);
 
+static int cmd_p(char *args);
+
 static struct {
   char *name;
   char *description;
@@ -55,6 +57,7 @@ static struct {
   { "si", "Go on some steps", cmd_si },
   {"info", "Print register states", cmd_info },
   {"x", "Scan memory", cmd_x},
+  {"p","Calculate the expr",cmd_p},
   /* TODO: Add more commands */
 
 };
@@ -134,6 +137,20 @@ static int cmd_x(char *args) {
 		   }	
 	    printf("\n");
             return 1;
+}
+
+static int cmd_p(char *args){
+	if(args == NULL){
+		printf("Please input an expression!\n");
+		return 0;
+	}
+	bool success;
+	int ans = expr(args, &success);
+	if(!success)
+		printf("There is an error occured in function expr()\n");
+	else 
+		printf(" : %d\t(0x%x)\n",ans,ans);
+	return 0;
 }
 
 void ui_mainloop(int is_batch_mode) {
