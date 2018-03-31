@@ -100,7 +100,9 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
+		tokens[nr_token].type = rules[i].token_type;
+		tokens[nr_token].precedence = rules[i].precedence;
+		tokens[nr_token].association = rules[i].association;
         switch (rules[i].token_type) {
 			case '+':
 			case '-':
