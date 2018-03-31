@@ -125,6 +125,7 @@ static bool make_token(char *e) {
 			case TK_Variable:
 			case TK_Number16:
 	 			if(substr_len > 31){
+				if(realloc(tokens[nr_token].str, substr_len+1) == NULL)	                         panic("your memory is full");
 					printf("input too long number!\n");
 					return false;
 				}
