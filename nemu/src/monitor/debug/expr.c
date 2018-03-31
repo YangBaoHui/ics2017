@@ -237,7 +237,7 @@ else if (p == q){
 			if(strcasecmp(regsb[i], reg) == 0)
 				return cpu.gpr[i%4]._8[i/4];
 		}
-		printf("didn't find register : %s\n", tokens[p].str);
+		printf("can't find register : %s\n", tokens[p].str);
 		*success = false;
 		return 1;
 	}
@@ -297,6 +297,7 @@ else{
 				  return 1;
 			  }
 			  else return val1 % val2;
+		
 		case TK_Minus: return -val1;
 		case TK_Deref: return vaddr_read(val1,4);
 		case '!' : return !val1;
@@ -322,6 +323,9 @@ return 1;
 int expr(char *e, bool *success) {
  if( strlen(e) > 31 ){
 	 *success = false;
+
+	 if(realloc(tokens[nr_token].str, substr_len+1) == NULL)
+		 panic("your memory is full");
 	printf("Too long expression!\n");
    return 0;
     }   
