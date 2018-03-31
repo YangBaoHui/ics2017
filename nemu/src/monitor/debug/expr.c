@@ -158,7 +158,7 @@ else if(p == q){
 	if(tokens[p].type == TK_Number){
 		int number = 0;
 		char *tmp = tokens[p].str;
-		while(*tmp){
+	 	while(*tmp){
 			number = number * 10 + *tmp - '0';
 			tmp++;
 		}
@@ -179,11 +179,12 @@ else if(p == q){
 				printf("Error occured when recognizing TK_Number16\n");
 				*success = false;
 				return 1;
-			}
+		 	}
 			tmp++;
-		}
+		 }
 		return number;
 	}
+
 /*	else if(tokens[p].type == TK_Register){
 		char *reg = tokens[p].str;
 		if( strlen(reg) <= 2 ){
@@ -230,7 +231,7 @@ else if(p == q){
 		printf("didn't find register : %s\n", tokens[p].str);
 		*success = false;
 		return 1;
-	}*/
+	}
 	else if(tokens[p].type == TK_Variable){
 		int result = get_var(tokens[p].str);
 		if(result == -1){
@@ -240,6 +241,7 @@ else if(p == q){
 		}
 		else return result;
 	}
+*/
 }
 else if(check_parentheses(p, q) == true) {
 	/* The expression is surrounded by a matched pair of parentheses. 
