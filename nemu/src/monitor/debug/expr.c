@@ -1,5 +1,5 @@
 #include "nemu.h"
-
+#include <stdlib.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -323,9 +323,6 @@ return 1;
 int expr(char *e, bool *success) {
  if( strlen(e) > 31 ){
 	 *success = false;
-
-	 if(realloc(tokens[nr_token].str, substr_len+1) == NULL)
-		 panic("your memory is full");
 	printf("Too long expression!\n");
    return 0;
     }   
@@ -348,6 +345,5 @@ int expr(char *e, bool *success) {
   }  
   *success = true;
   return eval(0,nr_token-1,success);
-  //panic("please implement me");
-  return 0;
+  panic("please implement me");
 }
