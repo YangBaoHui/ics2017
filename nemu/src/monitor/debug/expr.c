@@ -183,22 +183,22 @@ if(p>q){
 	*success = false;
 	return 1;
 	/*Bad expression*/
-}
+} 
 else if(p == q){ 
 	/*Single token.
 	 * * For now this token should be a number. 
 	 * * Return the value of the number.
-	 * */ 
-	if(tokens[p].type == TK_Number){
+ 	 * */ 
+ 	if(tokens[p].type == TK_Number){
 		int number = 0;
 		char *tmp = tokens[p].str;
-	 	while(*tmp){
+  	 	while(*tmp){
 			number = number * 10 + *tmp - '0';
 			tmp++;
 		}
 		return number;
-	}
-	else if(tokens[p].type == TK_Number16){
+ 	}
+ 	else if(tokens[p].type == TK_Number16){
 		int number = 0;
 		char *tmp = tokens[p].str + 2;
 		while(*tmp){
@@ -209,17 +209,17 @@ else if(p == q){
 				number += *tmp - 'a' + 10;
 			else if(*tmp >= 'A' && *tmp <= 'F')
 				number += *tmp - 'A' + 10;
-			else{
+ 			else{
 				printf("Error occured when recognizing TK_Number16\n");
 				*success = false;
 				return 1;
-		 	}
+ 		 	}
 			tmp++;
-		 }
+  		 }
 		return number;
-	}
+ 	}
 
-/*	else if(tokens[p].type == TK_Register){
+/* 	else if(tokens[p].type == TK_Register){
 		char *reg = tokens[p].str;
 		if( strlen(reg) <= 2 ){
 			printf("Wrong register name! %s\n",reg);
@@ -275,8 +275,8 @@ else if(p == q){
 		}
 		else return result;
 	}
-*/
-}
+*/ 
+} 
 else if(check_parentheses(p, q) == true) {
 	/* The expression is surrounded by a matched pair of parentheses. 
 	 * * If that is the case, just throw away the parentheses.
@@ -288,7 +288,7 @@ else{
 	int op = p;
 	int count = 0;
 	int i = 0;
-	for(i = p; i <= q; ++i){
+ 	for(i = p; i <= q; ++i){
 		if(tokens[i].type == '(') count++;
 		else if(tokens[i].type == ')') count--;
 		else if(count == 0){
@@ -304,12 +304,12 @@ else{
 		printf("parentheses error!\n");
 		*success = false;
 		return 1;
-	}
+ 	}
 	int op_type = tokens[op].type;
 	int val1 = 0, val2 = 0;
 	if(op_type == TK_Minus || op_type ==TK_Deref || op_type == '!'){
 		val1 = eval(op+1, q, success);
- 	}
+  	}
 	else{
 		val1 = eval(p, op- 1,success);
 		val2 = eval(op + 1, q,success); 
@@ -349,7 +349,7 @@ else{
 			 *success = false;
 			 return 1;
 	}
-}
+} 
 *success = false;
 return 1;
 } 
@@ -359,11 +359,11 @@ int expr(char *e, bool *success) {
 	 *success = false;
 	printf("Too long expression!\n");
    return 0;
-   }   
+    }   
     if (!make_token(e)) {
     *success = false;
     return 0;
-   }
+   } 
 
   /* TODO: Insert codes to evaluate the expression. */
 
@@ -373,13 +373,13 @@ int expr(char *e, bool *success) {
 		  tokens[i].type = TK_Minus;
 		  tokens[i].precedence = 14;
   tokens[i].association = 0;
-	  }
+	  } 
 	  if(tokens[i].type == '*' && (i == 0 || (tokens[i-1].type !=TK_Number && tokens[i-1].type !=TK_Register))){
 		  tokens[i].type = TK_Deref;
 		  tokens[i].precedence = 14;
  		  tokens[i].association = 0;
-	   }
-  } 
+	     }
+  }  
   *success = true;
   return eval(0,nr_token-1,success);
   //panic("please implement me");
