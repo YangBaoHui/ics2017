@@ -126,7 +126,7 @@ static int cmd_x(char *args) {
 	    char *arg1=strtok(NULL," ");
 	    char *arg2=strtok(NULL," ");
 
-	    int len;
+	     int len;
 	    vaddr_t addr;
 	    sscanf(arg1,"%d",&len);
             sscanf(arg2,"%x",&addr);	
@@ -136,7 +136,7 @@ static int cmd_x(char *args) {
 		        addr+=4;
 		   }	
 	    printf("\n");
-            return 1;
+        return 1;
 }
 
 static int cmd_p(char *args){

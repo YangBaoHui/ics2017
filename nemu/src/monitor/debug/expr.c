@@ -218,7 +218,7 @@ else if (p == q){
 		return number;
  	}
 
-/* 	else if(tokens[p].type == TK_Register){
+ 	else if(tokens[p].type == TK_Register){
 		char *reg = tokens[p].str;
 		if( strlen(reg) <= 2 ){
 			printf("Wrong register name! %s\n",reg);
@@ -228,53 +228,24 @@ else if (p == q){
 		reg ++;
 	    //Log("reg = %s\n",reg);
 		int i = 0;
-		if(strcasecmp(reg, "eip") == 0){
-			return cpu.eip;
-		}
-		if(strcasecmp(reg, "cf") == 0){
-			return cpu.CF;
-     	}
-		if(strcasecmp(r eg, "pf") == 0){
-			return cpu.PF;
-		}
-		if(strcasecmp(reg, "zf") == 0){
-			return cpu.ZF;
-		} 
-		if(strcasecmp(reg, "sf") == 0){
-			return cpu.SF;
-		} 
-		if(strcasecmp(reg, "if") == 0){
-			return cpu.IF;
-		} 
-		if(strcasecmp(reg, "df") == 0){
-			return cpu.DF;
-		} 
-		if(strcasecmp(reg, "of") == 0){
-			return cpu.OF;
-		} 
 		for(i = 0; i < 8; ++i)
 			if(strcasecmp(regsl[i], reg) == 0)
-				return reg_l(i);
+				return cpu.gpr[i]._32;
+		if(i==8){
 		for(i = 0; i < 8; ++i)
 			if(strcasecmp(regsw[i], reg) == 0)
-				return reg_w(i);
+				return cpu.gpr[i]._16;
+		}
+		if(i==8){
 		for(i = 0; i < 8; ++i)
 			if(strcasecmp(regsb[i], reg) == 0)
-				return reg_b(i);
+				return cpu.gpr[i%4]._8[i/4];
+		}
 		printf("didn't find register : %s\n", tokens[p].str);
 		*success = false;
 		return 1;
 	}
-	else if(tokens[p].type == TK_Variable){
-		int result = get_var(tokens[p].str);
-		if(result == -1){
-			*success = false;
-			printf("didn't find variable : %s\n", tokens[p].str);
-			return 1;
-		}
-		else return result;
-	} */
-} 
+	} 
 else if(check_parentheses(p, q) == true) {
 	/* The expression is surrounded by a matched pair of parentheses. 
 	 * * If that is the case, just throw away the parentheses.
