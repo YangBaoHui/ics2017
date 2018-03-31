@@ -184,8 +184,8 @@ if(p>q){
 	return 1;
 	/*Bad expression*/
 } 
-else if(p == q){ 
-	/*Single token.
+else if (p == q){ 
+	/*Si ngle token.
 	 * * For now this token should be a number. 
 	 * * Return the value of the number.
  	 * */ 
@@ -364,7 +364,9 @@ int expr(char *e, bool *success) {
     *success = false;
     return 0;
    } 
-
+	for(int j=0;j<nr_token;j++){
+		printf("%d\n",tokens[j].precedence);
+	}
   /* TODO: Insert codes to evaluate the expression. */
 
   int i = 0;
