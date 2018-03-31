@@ -59,4 +59,37 @@ void free_wp(int number){
 	return;
 }
 
+void check_wp(int* nemu_state){
+	WP* wp = head;
+	while( wp ){
+		bool success;
+		int value = expr(wp->s_expr, &success);
+		if( value != wp->last_value ){
+			*nemu_state = 0;
+			printf("%8x hit watchpoint %d : the value of the ( %s ) changed from 0x%x to 0x%x\n", cpu.eip, wp->NO,wp->s_expr, wp->last_value, value);
+			wp -> last_value = value;
+		}
+		wp = wp -> next;
+	}
+}
+
+void print_wp(){
+	if( head == NULL ){
+		printf("There is no watchpoint!\n");
+		return;
+	}
+	printf("watchpoints:\nNO\tEXPR\t\tVALUE\n");
+	int i = 0;
+	for(i = 0; i < 32; ++i){
+		WP* wp = head;
+		while( wp && wp->NO != i )
+			wp = wp->next;
+		if(wp)
+			printf("%d\t%s\t0x%x\t\n", wp->NO, wp->s_expr, wp->last_value);
+	}
+	return;
+}
+
+
+
 
