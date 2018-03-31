@@ -231,7 +231,7 @@ else if(p == q){
 		*success = false;
 		return 1;
 	}*/
-/*	else if(tokens[p].type == TK_Variable){
+	else if(tokens[p].type == TK_Variable){
 		int result = get_var(tokens[p].str);
 		if(result == -1){
 			*success = false;
@@ -239,14 +239,14 @@ else if(p == q){
 			return 1;
 		}
 		else return result;
-	}*/
+	}
 }
 else if(check_parentheses(p, q) == true) {
 	/* The expression is surrounded by a matched pair of parentheses. 
 	 * * If that is the case, just throw away the parentheses.
-	 * */
+ 	 * */
 	return eval(p + 1, q - 1,success); 
-}
+} 
 else{
 	bool par_err = false; 
 	int op = p;
@@ -260,11 +260,11 @@ else{
 				op = i; 
 			if(tokens[i].precedence == tokens[op].precedence && tokens[i].association == 1)
 				op = i; 
-		}
+ 		}
 		if(count < 0) par_err = true;
-	}
+ 	}
 	if(count != 0) par_err = true;
-	if(par_err){
+ 	if(par_err){
 		printf("parentheses error!\n");
 		*success = false;
 		return 1;
@@ -273,12 +273,12 @@ else{
 	int val1 = 0, val2 = 0;
 	if(op_type == TK_Minus || op_type ==TK_Deref || op_type == '!'){
 		val1 = eval(op+1, q, success);
-	}
+ 	}
 	else{
 		val1 = eval(p, op- 1,success);
 		val2 = eval(op + 1, q,success); 
-	}
-	switch(op_type) {
+ 	}
+ 	switch(op_type) {
 		case '+': return val1 + val2;
 		case '-': return val1 - val2;
 		case '*': return val1 * val2;
@@ -287,10 +287,10 @@ else{
 				  printf("Error! divided by 0\n");
 				  *success = false;
 				  return 1;
-			  }
+ 			  }
 			  else return val1/val2;
 		case '%':
-			  if(val2==0){
+ 			  if(val2==0){
 				  printf("Error! mod by 0\n");
 				  *success = false;
 				  return 1;
@@ -323,17 +323,17 @@ int expr(char *e, bool *success) {
 	 *success = false;
 	printf("Too long expression!\n");
    return 0;
-  }   
+   }   
     if (!make_token(e)) {
     *success = false;
     return 0;
-  }
+   }
 
   /* TODO: Insert codes to evaluate the expression. */
 
   int i = 0;
   for(i = 0; i < nr_token; i++){
-	  if(tokens[i].type == '-' && (i == 0 || (tokens[i-1].type !=TK_Number && tokens[i-1].type != TK_Register))){
+	   if(tokens[i].type == '-' && (i == 0 || (tokens[i-1].type !=TK_Number && tokens[i-1].type != TK_Register))){
 		  tokens[i].type = TK_Minus;
 		  tokens[i].precedence = 14;
   tokens[i].association = 0;
@@ -342,10 +342,10 @@ int expr(char *e, bool *success) {
 		  tokens[i].type = TK_Deref;
 		  tokens[i].precedence = 14;
  		  tokens[i].association = 0;
-	  }
-  }
+	   }
+  } 
   *success = true;
   return eval(0,nr_token-1,success);
   //panic("please implement me");
   return 0;
-  }
+}
