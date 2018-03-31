@@ -46,6 +46,11 @@ static int cmd_x(char *args);
 
 static int cmd_p(char *args);
 
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
+
 static struct {
   char *name;
   char *description;
@@ -55,9 +60,11 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q},
   { "si", "Go on some steps", cmd_si },
-  {"info", "Print register states", cmd_info },
+  {"info", "Print register states or watchpoint", cmd_info },
   {"x", "Scan memory", cmd_x},
   {"p","Calculate the expr",cmd_p},
+  {"w","set watchpoint",cmd_w},
+  {"d","delete watchpoint",cmd_d},
   /* TODO: Add more commands */
 
 };
@@ -118,7 +125,9 @@ void print_reg() {
 static int cmd_info(char *args) {
 	    char *arg = strtok(NULL, " ");
 	        if (strcmp(arg, "r") == 0)  print_reg();
-	    return 1;
+			else if(strcmp(arg, "w")==0) info_wp();
+	        else printf("Unknown command");
+		 	return 1;
 }
 
 static int cmd_x(char *args) {
@@ -152,6 +161,36 @@ static int cmd_p(char *args){
 		printf("The result is:%d\t(0x%x)\n",ans,ans);
 	return 0;
 }
+
+static int cmd_w(char *args){
+	    if(args == NULL)
+			        printf("please enter a expr, so you can watch it\n");
+		    else{
+				        new_wp(args);
+						    }   
+			    
+			    return 0;
+}
+
+static int cmd_d(char *args){
+	if(args == NULL){
+		printf("Please input a number!\n");
+		return 0;
+	}
+	int num;
+	if( sscanf(args, "%d", &num) == 0 ){
+		printf("Not a number!\n");
+		return 0;
+	}
+	if( num < 0 || num >= 32 ){
+		printf("n must be smaller than 32 and no smaller than 0\n");
+		return 0;
+	}
+	free_wp(num);
+	return 0;
+}
+
+
 
 void ui_mainloop(int is_batch_mode) {
 	  if (is_batch_mode) {
