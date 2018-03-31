@@ -16,7 +16,6 @@ enum {
 static struct rule {
   char *regex;
   int token_type;
-  int association;
   int precedence;
 } rules[] = {
 
@@ -24,27 +23,27 @@ static struct rule {
    * Pay attention to the precedence level of different rules.
    */ 
 
-  {" +", TK_NOTYPE,0,100},    // spaces
-  {"\\+", '+',1,12},         // plus
-  {"==", TK_EQ,1,10},         // equal
-  {"!=",TK_NotEqual,1,10},
-  {"-",'-',1,12},            //substract
-  {"\\*",'*',1,13},          //multiply
-  {"/",'/',1,13},            //divide
-  {"%",'%',1,13},            //mod
-  {"\\(",'(',1,15},
-  {"\\)",')',1,15},
-  {"<<",TK_ShiftLeft,1,11},
-  {">>",TK_ShiftRight,1,11},
-  {">=",TK_GreaterOrEqual,1,10},
-  {"<=",TK_SmallerOrEqual,1,10},
-  {">",'>',1,10},
-  {"<",'<',1,10},
-  {"\\!",'!',1,14},
-  {"\\$[a-zA-Z]+",TK_Register,0,100},
-  {"[0-9]+",TK_Number,0,100},
-  {"0x[0-9a-fA-F]+",TK_Number16,0,100},
-  {"[a-zA-Z_]+[a-zA-Z0-9_]*",TK_Variable,0,100},
+  {" +", TK_NOTYPE,100},    // spaces
+  {"\\+", '+',12},         // plus
+  {"==", TK_EQ,10},         // equal
+  {"!=",TK_NotEqual,10},
+  {"-",'-',12},            //substract
+  {"\\*",'*',13},          //multiply
+  {"/",'/',13},            //divide
+  {"%",'%',13},            //mod
+  {"\\(",'(',15},
+  {"\\)",')',15},
+  {"<<",TK_ShiftLeft,11},
+  {">>",TK_ShiftRight,11},
+  {">=",TK_GreaterOrEqual,10},
+  {"<=",TK_SmallerOrEqual,10},
+  {">",'>',10},
+  {"<",'<',10},
+  {"\\!",'!',14},
+  {"\\$[a-zA-Z]+",TK_Register,100},
+  {"[0-9]+",TK_Number,100},
+  {"0x[0-9a-fA-F]+",TK_Number16,100},
+  {"[a-zA-Z_]+[a-zA-Z0-9_]*",TK_Variable,100},
 
 };
 
@@ -72,7 +71,6 @@ void init_regex() {
 typedef struct token {
   int type;
   char str[32];
-  bool association;
   int precedence;
 } Token;
 
@@ -102,7 +100,6 @@ static bool make_token(char *e) {
          */
 		tokens[nr_token].type = rules[i].token_type;
 		tokens[nr_token].precedence = rules[i].precedence;
-		tokens[nr_token].association = rules[i].association;
         switch (rules[i].token_type) {
 			case '+':
 			case '-':
@@ -296,7 +293,7 @@ else{
 		else if(count == 0){
 			if(tokens[i].precedence < tokens[op].precedence)
 				op = i; 
-			if(tokens[i].precedence == tokens[op].precedence && tokens[i].association == 1)
+			if(tokens[i].precedence == tokens[op].precedence)
 				op = i; 
  		}
 		if(count < 0) par_err = true;
@@ -373,12 +370,10 @@ int expr(char *e, bool *success) {
 	   if(tokens[i].type == '-' && (i == 0 || (tokens[i-1].type !=TK_Number && tokens[i-1].type != TK_Register))){
 		  tokens[i].type = TK_Minus;
 		  tokens[i].precedence = 14;
-  tokens[i].association = 0;
 	  } 
 	  if(tokens[i].type == '*' && (i == 0 || (tokens[i-1].type !=TK_Number && tokens[i-1].type !=TK_Register))){
 		  tokens[i].type = TK_Deref;
 		  tokens[i].precedence = 14;
- 		  tokens[i].association = 0;
 	     }
   }  
   *success = true;
