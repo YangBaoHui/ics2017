@@ -184,7 +184,7 @@ if(p>q){
 	/*Bad expression*/
 } 
 else if (p == q){ 
-	/*Si ngle token.
+	/*Single token.
 	 * * For now this token should be a number. 
 	 * * Return the value of the number.
  	 * */ 
@@ -264,7 +264,7 @@ else if (p == q){
 		printf("didn't find register : %s\n", tokens[p].str);
 		*success = false;
 		return 1;
-	}
+	}*/
 	else if(tokens[p].type == TK_Variable){
 		int result = get_var(tokens[p].str);
 		if(result == -1){
@@ -273,8 +273,7 @@ else if (p == q){
 			return 1;
 		}
 		else return result;
-	}
-*/ 
+	} 
 } 
 else if(check_parentheses(p, q) == true) {
 	/* The expression is surrounded by a matched pair of parentheses. 
