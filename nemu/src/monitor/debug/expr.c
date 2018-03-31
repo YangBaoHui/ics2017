@@ -153,7 +153,6 @@ static bool make_token(char *e) {
   return true;
 }
 
-
 bool flag = true;
 
 bool check_parentheses(int p, int q){
@@ -174,8 +173,6 @@ bool check_parentheses(int p, int q){
 		if(count != 0) flag = false;
 		return flag;
 }
-
-int get_var(char*);
 
 int eval(int p, int q, bool *success){
 if(p>q){
