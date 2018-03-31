@@ -93,27 +93,61 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 
-        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
-            i, rules[i].regex, position, substr_len, substr_len, substr_start);
+        Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
+         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
-        }
+			case '+':
+			case '-':
+			case '*':
+			case '/':
+			case '(':
+			case ')':
+			case '%':
+			case '>':
+			case '<':
+			case '!':
+			case TK_And:
+			case TK_Or:
+			case TK_EQ:
+			case TK_NotEqual:
+			case TK_ShiftLeft:
+			case TK_ShiftRight:
+			case TK_GreaterOrEqual:
+			case TK_SmallerOrEqual:
+				break;
+			case TK_Register:
+			case TK_Number:
+			case TK_Variable:
+			case TK_Number16:
+	 			if(substr_len > 31){
+					printf("input too long number!\n");
+					return false;
+				}
+				strncpy(tokens[nr_token].str, substr_start, substr_len);
+				tokens[nr_token].str[substr_len] = '\0';
+				break;
+			case TK_NOTYPE:
+				nr_token--;
+				break;
+			default: printf("can not recognize the token type : %d\n",rules[i].token_type);
+					 return false;
+         }
+		nr_token++;
 
-        break;
-      }
-    }
+		break;
+       }
+     }
 
-    if (i == NR_REGEX) {
+     if (i == NR_REGEX) {
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
-    }
+    } 
   }
 
   return true;
