@@ -73,7 +73,7 @@ void check_wp(int* nemu_state){
 	}
 }
 
-void print_wp(){
+void info_wp(){
 	if( head == NULL ){
 		printf("There is no watchpoint!\n");
 		return;
