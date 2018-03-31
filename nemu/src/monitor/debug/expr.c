@@ -328,7 +328,7 @@ else{
  			  }
 			  else return val1/val2;
 		case '%':
- 			  if(val2==0){
+ 	 		  if(val2==0){
 				  printf("Error! mod by 0\n");
 				  *success = false;
 				  return 1;
@@ -350,7 +350,7 @@ else{
 		default: printf("op_type : didn't find %d\n",op_type);
 			 *success = false;
 			 return 1;
-	}
+	} 
 } 
 *success = false;
 return 1;
