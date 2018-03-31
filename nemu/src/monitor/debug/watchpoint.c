@@ -25,7 +25,7 @@ void new_wp(char* args){
 	WP* tmp = free_;
 	strcpy(tmp->s_expr, args);
 	bool success;
-	tmp->last_value = expr(args, &success);
+	tmp->newvalue = expr(args, &success);
 	if( success == false ){
 		printf("Failed to create a new watchpoint(bad expression)\n");
 		return;
@@ -64,10 +64,10 @@ void check_wp(int* nemu_state){
 	while( wp ){
 		bool success;
 		int value = expr(wp->s_expr, &success);
-		if( value != wp->last_value ){
+		if( value != wp->newvalue ){
 			*nemu_state = 0;
-			printf("%8x hit watchpoint %d : the value of the ( %s ) changed from 0x%x to 0x%x\n", cpu.eip, wp->NO,wp->s_expr, wp->last_value, value);
-			wp -> last_value = value;
+			printf("%8x hit watchpoint:the value of the ( %s ) changed from 0x%x to 0x%x\n", wp->NO,wp->s_expr, wp->newvalue, value);
+			wp -> newvalue = value;
 		}
 		wp = wp -> next;
 	}
@@ -85,7 +85,7 @@ void print_wp(){
 		while( wp && wp->NO != i )
 			wp = wp->next;
 		if(wp)
-			printf("%d\t%s\t0x%x\t\n", wp->NO, wp->s_expr, wp->last_value);
+			printf("%d\t%s\t0x%x\t\n", wp->NO, wp->s_expr, wp->newvalue);
 	}
 	return;
 }
