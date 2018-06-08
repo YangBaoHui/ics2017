@@ -29,28 +29,37 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-  TODO();
+  cpu.esp=cpu.ebp;
+  rtl_pop(&cpu.ebp);
 
   print_asm("leave");
 }
 
 make_EHelper(cltd) {
   if (decoding.is_operand_size_16) {
-    TODO();
-  }
+    if(((int)reg_l(0))<0)
+		reg_w(2)=0xFFFF;
+	else
+		reg_w(2)=0;
+   }
   else {
-    TODO();
-  }
+    if(((int)reg_l(0))<0)
+		reg_l(2)=0xFFFFFFFF;
+	else
+		reg_l(2)=0;
+  } 
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
 }
 
 make_EHelper(cwtl) {
   if (decoding.is_operand_size_16) {
-    TODO();
-  }
-  else {
-    TODO();
+    }
+	else{
+		if(cpu.edx<0)
+		cpu.edx=0xFFFFFFFF;
+		else
+			cpu.edx=0x0;
   }
 
   print_asm(decoding.is_operand_size_16 ? "cbtw" : "cwtl");
