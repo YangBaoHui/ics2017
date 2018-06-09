@@ -178,12 +178,28 @@ make_DHelper(I) {
   decode_op_I(eip, id_dest, true);
 }
 
+make_DHelper(SI) {
+  decode_op_SI(eip, id_dest, true);
+}
+
 make_DHelper(r) {
   decode_op_r(eip, id_dest, true);
 }
 
 make_DHelper(E) {
   decode_op_rm(eip, id_dest, true, NULL, false);
+}
+
+make_DHelper(int3) {
+  id_dest->type = OP_TYPE_IMM;
+  id_dest->imm = 3;
+  rtl_li(&id_dest->val, id_dest->imm);
+}
+
+make_DHelper(J_gp5) {
+  // for use with call r/m
+  // the target address can be computed in the decode stage
+  decoding.jmp_eip = id_dest->val;
 }
 
 make_DHelper(gp7_E) {

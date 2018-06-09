@@ -51,7 +51,7 @@ void rtl_setcc(rtlreg_t* dest, uint8_t subcode) {
 			*dest=0;
 		break;
     case CC_LE:
-		if(cpu.flags.OF != cpu.flags.SF || cpu.flags.ZF)
+		if(cpu.eflags.OF != cpu.eflags.SF || cpu.eflags.ZF)
 			*dest=1;
 		else
 			*dest=0;
