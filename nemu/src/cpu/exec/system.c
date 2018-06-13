@@ -36,7 +36,8 @@ make_EHelper(int) {
 }
 
 make_EHelper(iret) {
-  TODO();
+
+TODO();
 
   print_asm("iret");
 }
@@ -45,7 +46,9 @@ uint32_t pio_read(ioaddr_t, int);
 void pio_write(ioaddr_t, int, uint32_t);
 
 make_EHelper(in) {
-  TODO();
+  t0 = pio_read(id_src->val, id_dest->width);
+  rtl_sr(R_EAX, id_dest->width, &t0);
+  
 
   print_asm_template2(in);
 
@@ -55,8 +58,10 @@ make_EHelper(in) {
 }
 
 make_EHelper(out) {
-  TODO();
-
+  t0 = 0;
+  rtl_sr(R_EAX, id_dest->width, &t0);
+  pio_write(id_dest->val, id_src->width, id_src->val);
+  
   print_asm_template2(out);
 
 #ifdef DIFF_TEST
