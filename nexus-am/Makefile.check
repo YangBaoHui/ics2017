@@ -1,4 +1,5 @@
 ifneq ($(MAKECMDGOALS),clean) # ignore check for make clean
+AM_HOME ?= $(shell pwd)
 
 ifeq ($(AM_HOME),) # AM_HOME must exist
 $(error Environment variable AM_HOME must be defined.)

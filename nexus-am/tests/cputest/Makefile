@@ -1,4 +1,4 @@
-include $(AM_HOME)/Makefile.check
+include $(AM_HOME)/root/ics2017/nexus-am/Makefile.check
 .PHONY: all run clean latest $(ALL)
 
 ALL = $(basename $(notdir $(shell find tests/. -name "*.c")))

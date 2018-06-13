@@ -1,5 +1,5 @@
 include Makefile.check
-
+#include /root/ics2017/nexus-am/Makefile.check
 AM_HOME ?= $(shell pwd)
 
 all:
